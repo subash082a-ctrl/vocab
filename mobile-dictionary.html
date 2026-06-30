@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Vocabulary Dictionary</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      flex: 1;
+      padding: 1rem;
+      max-width: 760px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    h1, h2, h3 {
+      margin: 0 0 0.5rem;
+      line-height: 1.2;
+    }
+    p, li {
+      line-height: 1.6;
+      margin: 0.5rem 0;
+    }
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border: none;
+      border-radius: 999px;
+      padding: 0.75rem 1rem;
+      background: #2563eb;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .history-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .history-list li {
+      border-top: 1px solid #e2e8f0;
+      padding: 0.75rem 0;
+    }
+    .history-list li:first-child {
+      border-top: none;
+    }
+    .word-label {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .word-date {
+      font-size: 0.9rem;
+      color: #475569;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        background: #020617;
+        color: #e2e8f0;
+      }
+      header {
+        background: #0f172a;
+      }
+      .card {
+        background: #0b1220;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+      }
+      button {
+        background: #3b82f6;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Vocabulary Booster</h1>
+    <p>Daily rare words + saved history for mobile usage.</p>
+  </header>
+  <main>
+    <section class="card" aria-labelledby="today-title">
+      <div class="section-title">
+        <div>
+          <h2 id="today-title">Today's Word</h2>
+          <p class="word-date" id="today-date"></p>
+        </div>
+        <button id="random-btn">New rare word</button>
+      </div>
+      <div>
+        <p class="word-label" id="today-word"></p>
+        <p id="today-definition"></p>
+      </div>
+      <div>
+        <button id="save-btn">Save word</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="history-title">
+      <div class="section-title">
+        <h2 id="history-title">Saved Words</h2>
+      </div>
+      <p>This section stores your daily words so you can review them later.</p>
+      <ul class="history-list" id="history-list"></ul>
+    </section>
+
+    <section class="card" aria-labelledby="info-title">
+      <h2 id="info-title">How to use on your phone</h2>
+      <ol>
+        <li>Copy this file to your phone or host it on a local web server.</li>
+        <li>Open the file in your mobile browser for a clean and minimal view.</li>
+        <li>Use the "Save word" button to store each daily word in history.</li>
+        <li>Avoid common daily words by using this curated set of rare vocabulary.</li>
+      </ol>
+      <p><strong>Tip:</strong> Use a browser bookmark for quick access.</p>
+    </section>
+  </main>
+
+  <script>
+    const words = [
+      {word: 'abstruse', definition: 'Hard to understand; recondite.'},
+      {word: 'acumen', definition: 'Quickness and accuracy in judgment or insight.'},
+      {word: 'alacrity', definition: 'Eager readiness; cheerful willingness.'},
+      {word: 'apocryphal', definition: 'Of doubtful authenticity or origin.'},
+      {word: 'assiduous', definition: 'Showing great care, attention, and effort.'},
+      {word: 'cogent', definition: 'Clear, logical, and convincing.'},
+      {word: 'contumacious', definition: 'Stubbornly disobedient or rebellious.'},
+      {word: 'deleterious', definition: 'Causing harm or damage.'},
+      {word: 'desultory', definition: 'Lacking a plan, purpose, or enthusiasm.'},
+      {word: 'diaphanous', definition: 'Light, delicate, and translucent.'},
+      {word: 'ebullient', definition: 'Overflowing with enthusiasm or excitement.'},
+      {word: 'efficacious', definition: 'Effective in producing a desired result.'},
+      {word: 'enervate', definition: 'To weaken or drain of energy.'},
+      {word: 'esoteric', definition: 'Intended for or understood by only a few.'},
+      {word: 'fastidious', definition: 'Very attentive to detail and accuracy.'},
+      {word: 'germane', definition: 'Relevant to a subject or situation.'},
+      {word: 'impecunious', definition: 'Having little or no money.'},
+      {word: 'indefatigable', definition: 'Unable to be tired out; persistent.'},
+      {word: 'insipid', definition: 'Lacking flavor, interest, or excitement.'},
+      {word: 'laconic', definition: 'Using very few words.'},
+      {word: 'lugubrious', definition: 'Looking or sounding sad and dismal.'},
+      {word: 'mellifluous', definition: 'Sweet or musical; pleasant to hear.'},
+      {word: 'mendacious', definition: 'Not telling the truth; lying.'},
+      {word: 'nefarious', definition: 'Wicked or criminal.'},
+      {word: 'obfuscate', definition: 'To make something unclear or confusing.'},
+      {word: 'panacea', definition: 'A solution or remedy for all problems.'},
+      {word: 'perspicacious', definition: 'Having keen insight and understanding.'},
+      {word: 'punctilious', definition: 'Paying strict attention to detail.'},
+      {word: 'quixotic', definition: 'Unrealistic and impractical, especially in a noble way.'},
+      {word: 'sagacious', definition: 'Wise and shrewd; having sound judgment.'},
+      {word: 'sanguine', definition: 'Optimistic or positive, especially in bad situations.'},
+      {word: 'sententious', definition: 'Given to moralizing in a pompous manner.'},
+      {word: 'tantamount', definition: 'Equivalent in value or meaning.'},
+      {word: 'ubiquitous', definition: 'Present everywhere at once.'},
+      {word: 'vacillate', definition: 'To waver between different opinions or choices.'},
+      {word: 'vicissitude', definition: 'A change of circumstances or fortune.'},
+      {word: 'vicarious', definition: 'Experienced through another person rather than directly.'}
+    ];
+
+    const todayDate = document.getElementById('today-date');
+    const todayWord = document.getElementById('today-word');
+    const todayDefinition = document.getElementById('today-definition');
+    const historyList = document.getElementById('history-list');
+    const randomBtn = document.getElementById('random-btn');
+    const saveBtn = document.getElementById('save-btn');
+
+    const HISTORY_KEY = 'mobileDictionaryHistory';
+    const STORAGE_KEY = 'mobileDictionaryToday';
+
+    function formatDate(date) {
+      return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function getDayIndex(date) {
+      const epoch = new Date(Date.UTC(2026, 0, 1));
+      const diff = Math.floor((date - epoch) / (1000 * 60 * 60 * 24));
+      return ((diff % words.length) + words.length) % words.length;
+    }
+
+    function getStoredHistory() {
+      try {
+        return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveHistory(history) {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    }
+
+    function renderHistory() {
+      const history = getStoredHistory();
+      historyList.innerHTML = '';
+      if (history.length === 0) {
+        historyList.innerHTML = '<li>No words saved yet.</li>';
+        return;
+      }
+      history.slice().reverse().forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong class="word-label">${item.word}</strong><div class="word-date">${formatDate(new Date(item.date))}</div><div>${item.definition}</div>`;
+        historyList.appendChild(li);
+      });
+    }
+
+    function setDailyWord(wordEntry) {
+      const today = { date: new Date().toISOString(), word: wordEntry.word, definition: wordEntry.definition };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(today));
+      todayWord.textContent = today.word;
+      todayDefinition.textContent = today.definition;
+      todayDate.textContent = `Date: ${formatDate(new Date())}`;
+    }
+
+    function loadDailyWord() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const current = JSON.parse(stored);
+          const today = new Date();
+          if (current && current.word && current.definition) {
+            todayWord.textContent = current.word;
+            todayDefinition.textContent = current.definition;
+            todayDate.textContent = `Date: ${formatDate(today)}`;
+            return;
+          }
+        } catch (error) {
+          // ignore parse error
+        }
+      }
+      const index = getDayIndex(new Date());
+      setDailyWord(words[index]);
+    }
+
+    function saveTodayToHistory() {
+      const history = getStoredHistory();
+      const word = todayWord.textContent;
+      const definition = todayDefinition.textContent;
+      if (!word || !definition) return;
+      const exists = history.some(item => item.word === word);
+      if (exists) return;
+      history.push({ date: new Date().toISOString(), word, definition });
+      saveHistory(history);
+      renderHistory();
+      alert(`Saved “${word}” to history.`);
+    }
+
+    randomBtn.addEventListener('click', () => {
+      const index = Math.floor(Math.random() * words.length);
+      setDailyWord(words[index]);
+    });
+
+    saveBtn.addEventListener('click', saveTodayToHistory);
+
+    loadDailyWord();
+    renderHistory();
+  </script>
+</body>
+</html>

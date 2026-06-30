@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Vocabulary Booster</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#030712">
+  <script>
+    // Force and persist the dark theme - prevent any other theme from loading
+    document.documentElement.style.colorScheme = 'dark';
+    localStorage.setItem('vocabAppTheme', 'dark');
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Vocabulary App</p>
+        <h1>Vocabulary Booster</h1>
+        <p class="subtitle">Daily rare words plus explorer tools for stronger English.</p>
+      </div>
+      <button id="install-btn" class="install-btn hidden" type="button">Install app</button>
+    </header>
+
+    <nav class="tabs" aria-label="App sections">
+      <button class="tab-button active" data-section="home-section">Home</button>
+      <button class="tab-button" data-section="search-section">Search</button>
+      <button class="tab-button" data-section="categories-section">Categories</button>
+      <button class="tab-button" data-section="quiz-section">Quiz</button>
+    </nav>
+
+    <main>
+      <section id="home-section" class="app-section">
+        <section class="card" aria-labelledby="today-word-title">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Word of the Day</p>
+              <h2 id="today-word-title">Today’s Word</h2>
+            </div>
+            <button id="random-btn" class="action-btn" type="button">New rare word</button>
+          </div>
+          <div class="word-panel">
+            <p class="word-label" id="today-word"></p>
+            <p class="word-definition" id="today-definition"></p>
+            <p class="word-note" id="today-date"></p>
+          </div>
+          <button id="save-btn" class="primary-btn" type="button">Save word</button>
+        </section>
+
+        <section class="card" aria-labelledby="saved-title">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Saved History</p>
+              <h2 id="saved-title">Saved Words</h2>
+            </div>
+            <button id="clear-btn" class="secondary-btn" type="button">Clear history</button>
+          </div>
+          <p class="help-text">Saved words stay here so you can review them later.</p>
+          <ul id="history-list" class="history-list"></ul>
+        </section>
+      </section>
+
+      <section id="search-section" class="app-section hidden">
+        <section class="card" aria-labelledby="search-title">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Search</p>
+              <h2 id="search-title">Find a word</h2>
+            </div>
+          </div>
+          <div class="search-panel">
+            <input id="search-input" class="search-input" type="search" placeholder="Search by word or meaning" aria-label="Search vocabulary">
+            <button id="search-btn" class="secondary-btn" type="button">Search</button>
+          </div>
+          <ul id="search-results" class="result-list"></ul>
+        </section>
+      </section>
+
+      <section id="categories-section" class="app-section hidden">
+        <section class="card" aria-labelledby="categories-title">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Categories</p>
+              <h2 id="categories-title">Explore by theme</h2>
+            </div>
+          </div>
+          <div id="category-list" class="chip-list"></div>
+          <ul id="category-results" class="result-list"></ul>
+        </section>
+      </section>
+
+      <section id="quiz-section" class="app-section hidden">
+        <section class="card" aria-labelledby="quiz-title">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Quiz</p>
+              <h2 id="quiz-title">Practice your vocabulary</h2>
+            </div>
+            <button id="next-question-btn" class="action-btn" type="button">Next question</button>
+          </div>
+          <div class="quiz-panel">
+            <p class="quiz-prompt" id="quiz-prompt"></p>
+            <div id="quiz-options" class="quiz-options"></div>
+            <p id="quiz-feedback" class="quiz-feedback"></p>
+          </div>
+        </section>
+      </section>
+
+      <section class="card" aria-labelledby="info-title">
+        <p class="eyebrow">How to use</p>
+        <h2 id="info-title">Install and use on mobile</h2>
+        <ol class="info-list">
+          <li>Open this page from your phone browser.</li>
+          <li>Tap the install prompt or add to home screen.</li>
+          <li>Use the tabs to explore search, categories, and quiz practice.</li>
+          <li>Save words from the home screen and review them later.</li>
+        </ol>
+        <p>When installed, the app works like a normal phone app and is available offline after the first load.</p>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
